@@ -1,0 +1,136 @@
+<div class="mainContainer">
+    <div class="headerSecti">
+        <h2>Diferencia de cajas</h2>
+    </div>
+    <div class="selects">
+        <mat-form-field appearance="fill" style="margin-right: 5px;">
+          <mat-label><mat-icon>search</mat-icon> Buscar</mat-label>
+          <input matInput (keyup)="applyFilter($event)" [(ngModel)]="filterValue" placeholder="Buscar" #input>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" style="margin-right: 5px;">
+            <mat-label>Marca</mat-label>
+            <mat-select (selectionChange)="selectBrand()" [(ngModel)]="brandSelector">
+                <mat-option *ngFor="let brand of brands" [value]="brand">
+                    {{ brand.brandName }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" style="margin-right: 5px;">
+            <mat-label>Región</mat-label>
+            <mat-select (selectionChange)="selectRegion()" [disabled]="disabledRegion" [(ngModel)]="branchSelector">
+                <mat-option *ngFor="let region of branches" [value]="region.branchId">
+                    {{ region.branchName }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" style="margin-right: 5px;">
+            <mat-label>Ruta</mat-label>
+            <mat-select (selectionChange)="selectRoute()" [(ngModel)]="routeSelector">
+                <mat-option *ngFor="let route of routes" [value]="route.routeId">
+                    {{route.routeName}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+    </div>
+
+    <div class="datesPickers">
+      <div class="date" style="margin-right: 5px;">
+        <mat-icon style="margin-right: 4px; color: #3F51B5;">event</mat-icon> Desde <input class="dateInput" type="date" (change)="changeInitialDate()" [(ngModel)]="initialDate">
+      </div>
+      <div class="date" id="inputFinalDate" style="margin-right: 5px; opacity: 0.4;">
+        <mat-icon style="margin-right: 4px; color: #3F51B5;">event</mat-icon> Hasta <input class="dateInput" type="date" [disabled]="disabledFinalDate" (change)="changeFinalDate()" [(ngModel)]="finalDate" [min]="initialDate">
+      </div>
+      <button mat-raised-button (click)="clearFilters()" color="primary" style="height: 48px;">Limpiar <mat-icon style="font-size: 22px;">cleaning_services</mat-icon></button>
+    </div>
+
+    <div class="labelDiv">
+      <label> Pag: {{initPag}} De: {{finPag}} </label>
+      <label>Total diferencias: {{pagesCashDiff.totalResults}} </label>
+    </div>
+
+    <div class="table">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+           
+            <ng-container matColumnDef="internalId">
+              <th mat-header-cell *matHeaderCellDef style="text-align: center;"> ID  interno</th>
+              <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.internalId}} </td>
+              <td mat-footer-cell *matFooterCellDef>  </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="date">
+              <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Fecha </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.date}} </td>
+              <td mat-footer-cell *matFooterCellDef>  </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="brandName">
+              <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Marca </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.brandName}} </td>
+              <td mat-footer-cell *matFooterCellDef>  </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="branchName">
+              <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Región </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.branchName}} </td>
+              <td mat-footer-cell *matFooterCellDef>  </td>
+            </ng-container>
+
+            <ng-container matColumnDef="routeName">
+              <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Ruta </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.routeName}} </td>
+              <td mat-footer-cell *matFooterCellDef>  </td>
+            </ng-container>
+
+            <ng-container matColumnDef="groupName">
+              <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Grupo </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.groupName}} </td>
+              <td mat-footer-cell *matFooterCellDef style="text-align: center; font-weight: 700;"> Total </td>
+            </ng-container>
+
+            <ng-container matColumnDef="gapToPicking">
+              <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Diferencia <br> cobranza </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.gapToPicking | number }} </td>
+              <td mat-footer-cell *matFooterCellDef style="text-align: center; font-weight: 700;"> {{ getGapToPicking() | number }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="gapToGive">
+              <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Diferencia <br> colocado </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.gapToGive | number }} </td>
+              <td mat-footer-cell *matFooterCellDef style="text-align: center; font-weight: 700;"> {{ getGapToGive() | number }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="gapToCommission">
+              <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Diferencia <br> comisiones </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.gapToCommission | number }} </td>
+              <td mat-footer-cell *matFooterCellDef style="text-align: center; font-weight: 700;"> {{ getGapToCommission() | number }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="operationCapturaCode">
+              <th mat-header-cell *matHeaderCellDef style="text-align: center;"> ID </th>
+              <td mat-cell *matCellDef="let element" (click)="openDialogOperationsCapture(element.detailOperation)" style="text-align: center; color:#0026ff; cursor: pointer;"> {{element.operationCapturaCode}} </td>
+              <td mat-footer-cell *matFooterCellDef>  </td>
+            </ng-container>
+    
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+ 
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="4">No encontre resultados con: "{{input.value}}"</td>
+            </tr>
+        
+          </table>
+          
+          <div style="margin-top: 6px; display: flex; justify-content: space-between;">
+            <label> Pag: {{initPag}} De: {{finPag}} </label>
+            <div>
+              <a (click)="changePage('left')"> < </a>  <a *ngFor="let pag of paginatorArray" (click)="updatePage(pag)"> {{pag}} </a> <a (click)="changePage('right')"> > </a>
+            </div>
+          </div>
+
+    </div>
+</div>

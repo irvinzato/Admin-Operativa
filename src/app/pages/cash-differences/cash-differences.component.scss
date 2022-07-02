@@ -1,0 +1,83 @@
+.mainContainer {
+    margin: 20px;
+}
+
+.datesPickers {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.date {
+    display: flex;
+    height: 40px;
+    width: 190px;
+    padding: 2px;
+    border: 2px solid #3F51B5;
+    border-radius: 6px;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    width: 7%;
+    height: 4%;
+    position: absolute;
+    top: 1;
+    left: 1;
+    color: transparent;
+    background: 0 0;
+    margin: 0;
+    opacity: 0;
+    pointer-events: auto;
+}
+
+.dateInput {
+    text-decoration: none;
+    border: none;
+    background: rgb(247, 247, 247);
+    color: #3F51B5;
+}
+
+button {
+    cursor: pointer;
+    background: rgb(243, 243, 243) !important;
+    color: #3F51B5 !important;
+    border: 2px solid #3F51B5;
+    border-radius: 8px;
+}
+
+.labelDiv {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+table {
+    width: 100%;
+}
+
+.mat-header-row {
+    background: #3F51B5;
+}
+
+th {
+    color: white;
+}
+
+.totals {
+    display: flex;
+    margin-left: 450px;
+    margin-top: 10px;
+}
+
+a {
+    cursor: pointer;
+    font-weight: 400;
+    padding: 4px 8px;
+    margin: 0px 2px;
+    background: rgb(239, 239, 239);
+    border-radius: 8px;
+}
+
+a:hover {
+    color: rgb(255, 255, 255);
+    background: #3F51B5;
+}

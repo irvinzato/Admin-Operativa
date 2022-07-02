@@ -1,0 +1,50 @@
+<mat-sidenav-container class="example-sidenav-container" >
+    <mat-sidenav opened class="example-sidenav"  [mode]="'side'">
+        <div class="headerNav">
+            <div class="iconHeader">
+                <button mat-icon-button><mat-icon class="iconNavHeader">account_circle</mat-icon></button>
+            </div>
+            <div class="textHeader">
+                <p class="textNavHeader">Nombre Administrador</p>
+                <label class="textRol">Rol</label>
+            </div>
+        </div>
+
+        <div class="navOptions">
+            <label>Operaciones</label>
+            <a mat-list-item class="module-menu" href="https://ldgfrontqa.finsuite.com.mx/#/groupLeaderList">
+                <mat-icon class="iconNavContent">flag</mat-icon>Líderes de grupo</a><br><br>
+            <a mat-list-item class="module-menu" routerLink="cash-difference">
+                <mat-icon class="iconNavContent">inbox</mat-icon>Diferencia de cajas</a><br><br>
+            <a mat-list-item class="module-menu" routerLink="">
+                <mat-icon class="iconNavContent">list_alt</mat-icon>Listado de movimiento</a><br><br>
+            <a mat-list-item class="module-menu" routerLink="operation-capture">
+                <mat-icon class="iconNavContent">table_chart</mat-icon>Caputra de operaciones</a><br><br>
+        </div>
+
+        <div class="navOptions">
+            <label>Riesgos/Normatividad</label>
+            <a mat-list-item class="module-menu" routerLink="routeMonitoring">
+                <mat-icon class="iconNavContent">gavel</mat-icon>Documentación de fraudes</a><br><br>
+        </div>
+
+        <div class="navOptions">
+            <label>Comercial</label>
+            <a mat-list-item class="module-menu" routerLink="routeMonitoring">
+                <mat-icon class="iconNavContent">share_location</mat-icon>Monitoreo de rutas</a><br><br>
+
+            <a mat-list-item class="module-menu" routerLink="routeConfiguration">
+                <mat-icon class="iconNavContent">route</mat-icon>Configuracion de rutas</a><br><br>
+        </div>
+
+        <mat-nav-list>
+
+        </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+        <div>
+            <router-outlet></router-outlet>
+        </div>
+    </mat-sidenav-content>
+</mat-sidenav-container>
